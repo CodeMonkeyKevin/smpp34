@@ -1,6 +1,7 @@
 package smpp34
 
 import (
+	"crypto/tls"
 	"time"
 )
 
@@ -12,10 +13,31 @@ type Transmitter struct {
 	Err          error        // Errors generated in go routines that lead to conn close
 }
 
-// eli = EnquireLink Interval in Seconds
+// NewTransmitter creates and initializes a new Transmitter.
+// The eli parameter is for EnquireLink interval, in seconds.
 func NewTransmitter(host string, port int, eli int, bindParams Params) (*Transmitter, error) {
+	return newTransmitter(host, port, eli, bindParams, nil)
+}
+
+// NewTransmitterTLs creates and initializes a new Transmitter using TLS.
+// The eli parameter is for EnquireLink interval, in seconds.
+func NewTransmitterTLS(host string, port int, eli int, bindParams Params, config *tls.Config) (*Transmitter, error) {
+	if config == nil {
+		config = &tls.Config{}
+	}
+	return newTransmitter(host, port, eli, bindParams, config)
+}
+
+// eli = EnquireLink Interval in Seconds
+func newTransmitter(host string, port int, eli int, bindParams Params, config *tls.Config) (*Transmitter, error) {
 	tx := &Transmitter{}
-	if err := tx.Connect(host, port); err != nil {
+	var err error
+	if config == nil {
+		err = tx.Connect(host, port)
+	} else {
+		err = tx.ConnectTLS(host, port, config)
+	}
+	if err != nil {
 		return nil, err
 	}
 
@@ -184,8 +206,8 @@ func (t *Transmitter) Read() (Pdu, error) {
 			return nil, err
 		}
 	case ENQUIRE_LINK_RESP:
-		// Reset EnquireLink Check
-		t.eLCheckTimer.Reset(time.Duration(t.eLDuration) * time.Second)
+		// Stop EnquireLink Check.
+		t.eLCheckTimer.Stop()
 	case UNBIND:
 		t.UnbindResp(pdu.GetHeader().Sequence)
 		t.Close()
