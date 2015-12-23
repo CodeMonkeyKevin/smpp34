@@ -166,7 +166,7 @@ const (
    MESSAGE_PAYLOAD             = 0x0424
    DELIVERY_FAILURE_REASON     = 0x0425
    MORE_MESSAGES_TO_SEND       = 0x0426
-   MESSAGE_STATE               = 0x0427
+   DR_MESSAGE_STATE            = 0x0427
    USSD_SERVICE_OP             = 0x0501
    DISPLAY_TIME                = 0x1201
    SMS_SIGNAL                  = 0x1203
