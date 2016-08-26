@@ -13,6 +13,8 @@ type Transceiver struct {
 	Err          error        // Errors generated in go routines that lead to conn close
 }
 
+func (t *Transceiver) ELDuration(v int) { t.eLDuration = v }
+
 // NewTransceiver creates and initializes a new Transceiver.
 // The eli parameter is for EnquireLink interval, in seconds.
 func NewTransceiver(host string, port int, eli int, bindParams Params) (*Transceiver, error) {
@@ -159,6 +161,7 @@ func (t *Transceiver) bindCheck() {
 	}
 }
 
+func (t *Transceiver) StartEnquireLink(eli int) { t.startEnquireLink(eli) }
 func (t *Transceiver) startEnquireLink(eli int) {
 	t.eLTicker = time.NewTicker(time.Duration(eli) * time.Second)
 	// check delay is half the time of enquire link intervel
