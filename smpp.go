@@ -12,13 +12,16 @@ import (
 
 var Debug bool
 
+type NewSeqNumFunc func() uint32
+
 type Smpp struct {
-	mu       sync.Mutex
-	conn     net.Conn
-	reader   *bufio.Reader
-	writer   *bufio.Writer
-	Sequence uint32
-	Bound    bool
+	Mu            sync.Mutex
+	conn          net.Conn
+	reader        *bufio.Reader
+	writer        *bufio.Writer
+	Sequence      uint32
+	Bound         bool
+	NewSeqNumFunc NewSeqNumFunc
 }
 
 type SmppErr string
@@ -78,9 +81,13 @@ func (s *Smpp) ConnectTLS(host string, port int, config *tls.Config) error {
 }
 
 func (s *Smpp) NewSeqNum() uint32 {
-	defer s.mu.Unlock()
+	if s.NewSeqNumFunc != nil {
+		return s.NewSeqNumFunc()
+	}
 
-	s.mu.Lock()
+	defer s.Mu.Unlock()
+
+	s.Mu.Lock()
 	s.Sequence++
 	return s.Sequence
 }
