@@ -264,9 +264,25 @@ func (s *Smpp) GenericNack(seq uint32, status CMDStatus) (Pdu, error) {
 	return Pdu(p), nil
 }
 
-func (s *Smpp) Read() (Pdu, error) {
+func (s *Smpp) Read() (Pdu, error) { return SmppReadFrom(s.conn) }
+
+func (s *Smpp) Write(p Pdu) error {
+	_, err := s.conn.Write(p.Writer())
+
+	if Debug {
+		fmt.Println(hex.Dump(p.Writer()))
+	}
+
+	return err
+}
+
+func (s *Smpp) Close() {
+	s.conn.Close()
+}
+
+func SmppReadFrom(conn net.Conn) (Pdu, error) {
 	l := make([]byte, 4)
-	_, err := s.conn.Read(l)
+	_, err := conn.Read(l)
 	if err != nil {
 		return nil, err
 	}
@@ -278,7 +294,7 @@ func (s *Smpp) Read() (Pdu, error) {
 
 	data := make([]byte, pduLength)
 
-	i, err := s.conn.Read(data)
+	i, err := conn.Read(data)
 	if err != nil {
 		return nil, err
 	}
@@ -298,18 +314,4 @@ func (s *Smpp) Read() (Pdu, error) {
 	}
 
 	return pdu, nil
-}
-
-func (s *Smpp) Write(p Pdu) error {
-	_, err := s.conn.Write(p.Writer())
-
-	if Debug {
-		fmt.Println(hex.Dump(p.Writer()))
-	}
-
-	return err
-}
-
-func (s *Smpp) Close() {
-	s.conn.Close()
 }
