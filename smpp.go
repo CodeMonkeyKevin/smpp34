@@ -192,8 +192,6 @@ func (s *Smpp) SubmitSmEncoded(source_addr, destination_addr string, short_messa
 	p.SetField(DESTINATION_ADDR, destination_addr)
 	p.SetField(SHORT_MESSAGE, short_message)
 
-	fmt.Println("Smpp.SubmitSmEncoded, sm:", short_message)
-
 	for f, v := range *params {
 		err := p.SetField(f, v)
 
@@ -202,7 +200,6 @@ func (s *Smpp) SubmitSmEncoded(source_addr, destination_addr string, short_messa
 		}
 	}
 
-	fmt.Println("PDU sm:", p.GetField(SHORT_MESSAGE))
 	return p, nil
 }
 

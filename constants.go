@@ -129,49 +129,83 @@ const (
 )
 
 const (
-   // Optional Field Tags
-   DEST_ADDR_SUBUNIT           = 0x0005
-   DEST_NETWORK_TYPE           = 0x0006
-   DEST_BEARER_TYPE            = 0x0007
-   DEST_TELEMATICS_ID          = 0x0008
-   SOURCE_ADDR_SUBUNIT         = 0x000D
-   SOURCE_NETWORK_TYPE         = 0x000E
-   SOURCE_BEARER_TYPE          = 0x000F
-   SOURCE_TELEMATICS_ID        = 0x0010
-   QOS_TIME_TO_LIVE            = 0x0017
-   PAYLOAD_TYPE                = 0x0019
-   ADDITIONAL_STATUS_INFO_TEXT = 0x001D
-   RECEIPTED_MESSAGE_ID        = 0x001E
-   MS_MSG_WAIT_FACILITIES      = 0x0030
-   PRIVACY_INDICATOR           = 0x0201
-   SOURCE_SUBADDRESS           = 0x0202
-   DEST_SUBADDRESS             = 0x0203
-   USER_MESSAGE_REFERENCE      = 0x0204
-   USER_RESPONSE_CODE          = 0x0205
-   SOURCE_PORT                 = 0x020A
-   DESTINATION_PORT            = 0x020B
-   SAR_MSG_REF_NUM             = 0x020C
-   LANGUAGE_INDICATOR          = 0x020D
-   SAR_TOTAL_SEGMENTS          = 0x020E
-   SAR_SEGMENT_SEQNUM          = 0x020F
-   SC_INTERFACE_VERSION        = 0x0210
-   CALLBACK_NUM_PRES_IND       = 0x0302
-   CALLBACK_NUM_ATAG           = 0x0303
-   NUMBER_OF_MESSAGES          = 0x0304
-   CALLBACK_NUM                = 0x0381
-   DPF_RESULT                  = 0x0420
-   SET_DPF                     = 0x0421
-   MS_AVAILABILITY_STATUS      = 0x0422
-   NETWORK_ERROR_CODE          = 0x0423
-   MESSAGE_PAYLOAD             = 0x0424
-   DELIVERY_FAILURE_REASON     = 0x0425
-   MORE_MESSAGES_TO_SEND       = 0x0426
-   DR_MESSAGE_STATE            = 0x0427
-   USSD_SERVICE_OP             = 0x0501
-   DISPLAY_TIME                = 0x1201
-   SMS_SIGNAL                  = 0x1203
-   MS_VALIDITY                 = 0x1204
-   ALERT_ON_MESSAGE_DELIVERY   = 0x130C
-   ITS_REPLY_TYPE              = 0x1380
-   ITS_SESSION_INFO            = 0x1383
+	// Optional Field Tags
+	DEST_ADDR_SUBUNIT           = 0x0005
+	DEST_NETWORK_TYPE           = 0x0006
+	DEST_BEARER_TYPE            = 0x0007
+	DEST_TELEMATICS_ID          = 0x0008
+	SOURCE_ADDR_SUBUNIT         = 0x000D
+	SOURCE_NETWORK_TYPE         = 0x000E
+	SOURCE_BEARER_TYPE          = 0x000F
+	SOURCE_TELEMATICS_ID        = 0x0010
+	QOS_TIME_TO_LIVE            = 0x0017
+	PAYLOAD_TYPE                = 0x0019
+	ADDITIONAL_STATUS_INFO_TEXT = 0x001D
+	RECEIPTED_MESSAGE_ID        = 0x001E
+	MS_MSG_WAIT_FACILITIES      = 0x0030
+	PRIVACY_INDICATOR           = 0x0201
+	SOURCE_SUBADDRESS           = 0x0202
+	DEST_SUBADDRESS             = 0x0203
+	USER_MESSAGE_REFERENCE      = 0x0204
+	USER_RESPONSE_CODE          = 0x0205
+	SOURCE_PORT                 = 0x020A
+	DESTINATION_PORT            = 0x020B
+	SAR_MSG_REF_NUM             = 0x020C
+	LANGUAGE_INDICATOR          = 0x020D
+	SAR_TOTAL_SEGMENTS          = 0x020E
+	SAR_SEGMENT_SEQNUM          = 0x020F
+	SC_INTERFACE_VERSION        = 0x0210
+	CALLBACK_NUM_PRES_IND       = 0x0302
+	CALLBACK_NUM_ATAG           = 0x0303
+	NUMBER_OF_MESSAGES          = 0x0304
+	CALLBACK_NUM                = 0x0381
+	DPF_RESULT                  = 0x0420
+	SET_DPF                     = 0x0421
+	MS_AVAILABILITY_STATUS      = 0x0422
+	NETWORK_ERROR_CODE          = 0x0423
+	MESSAGE_PAYLOAD             = 0x0424
+	DELIVERY_FAILURE_REASON     = 0x0425
+	MORE_MESSAGES_TO_SEND       = 0x0426
+	DR_MESSAGE_STATE            = 0x0427
+	USSD_SERVICE_OP             = 0x0501
+	DISPLAY_TIME                = 0x1201
+	SMS_SIGNAL                  = 0x1203
+	MS_VALIDITY                 = 0x1204
+	ALERT_ON_MESSAGE_DELIVERY   = 0x130C
+	ITS_REPLY_TYPE              = 0x1380
+	ITS_SESSION_INFO            = 0x1383
+)
+
+const (
+	// Encoding Types
+	ENCODING_DEFAULT   = 0x00 // SMSC Default
+	ENCODING_IA5       = 0x01 // IA5 (CCITT T.50)/ASCII (ANSI X3.4)
+	ENCODING_BINARY    = 0x02 // Octet unspecified (8-bit binary)
+	ENCODING_ISO88591  = 0x03 // Latin 1 (ISO-8859-1)
+	ENCODING_BINARY2   = 0x04 // Octet unspecified (8-bit binary)
+	ENCODING_JIS       = 0x05 // JIS (X 0208-1990)
+	ENCODING_ISO88595  = 0x06 // Cyrillic (ISO-8859-5)
+	ENCODING_ISO88598  = 0x07 // Latin/Hebrew (ISO-8859-8)
+	ENCODING_ISO10646  = 0x08 // UCS2 (ISO/IEC-10646)
+	ENCODING_PICTOGRAM = 0x09 // Pictogram Encoding
+	ENCODING_ISO2022JP = 0x0A // ISO-2022-JP (Music Codes)
+	ENCODING_EXTJIS    = 0x0D // Extended Kanji JIS (X 0212-1990)
+	ENCODING_KSC5601   = 0x0E // KS C 5601
+)
+
+const (
+	// ESM_CLASS Types
+	ESM_CLASS_MSGMODE_DEFAULT      = 0x00 // Default SMSC mode (e.g. Store and Forward)
+	ESM_CLASS_MSGMODE_DATAGRAM     = 0x01 // Datagram mode
+	ESM_CLASS_MSGMODE_FORWARD      = 0x02 // Forward (i.e. Transaction) mode
+	ESM_CLASS_MSGMODE_STOREFORWARD = 0x03 // Store and Forward mode (use this to select Store and Forward mode if Default mode is not Store and Forward)
+
+	ESM_CLASS_MSGTYPE_DEFAULT     = 0x00 // Default message type (i.e. normal message)
+	ESM_CLASS_MSGTYPE_DELIVERYACK = 0x08 // Message containts ESME Delivery Acknowledgement
+	ESM_CLASS_MSGTYPE_USERACK     = 0x10 // Message containts ESME Manual/User Acknowledgement
+
+	ESM_CLASS_GSMFEAT_NONE          = 0x00 // No specific features selected
+	ESM_CLASS_GSMFEAT_UDHI          = 0x40 // UDHI Indicator (only relevant for MT msgs)
+	ESM_CLASS_GSMFEAT_REPLYPATH     = 0x80 // Set Reply Path (only relevant for GSM net)
+	ESM_CLASS_GSMFEAT_UDHIREPLYPATH = 0xC0 // Set UDHI and Reply Path (for GSM net)
 )
