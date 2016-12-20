@@ -33,7 +33,13 @@ func NewField(f string, v interface{}) Field {
 	case SERVICE_TYPE, SOURCE_ADDR, DESTINATION_ADDR, SCHEDULE_DELIVERY_TIME, VALIDITY_PERIOD, SYSTEM_ID, PASSWORD, SYSTEM_TYPE, ADDRESS_RANGE, MESSAGE_ID, FINAL_DATE:
 		return NewVariableField([]byte(v.(string)))
 	case SHORT_MESSAGE:
-		return NewSMField([]byte(v.(string)))
+		switch v.(type) {
+		case []byte:
+			return NewSMField(v.([]byte))
+		default:
+			return NewSMField([]byte(v.(string)))
+		}
+
 	}
 	return nil
 }

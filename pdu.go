@@ -217,6 +217,8 @@ func validate_pdu_field(f string, v interface{}) bool {
 	case SERVICE_TYPE, SOURCE_ADDR, DESTINATION_ADDR, SCHEDULE_DELIVERY_TIME, VALIDITY_PERIOD, SYSTEM_ID, PASSWORD, SYSTEM_TYPE, ADDRESS_RANGE, MESSAGE_ID, SHORT_MESSAGE, FINAL_DATE:
 		if validate_pdu_field_type("string", v) {
 			return true
+		} else if f == SHORT_MESSAGE && validate_pdu_field_type([]byte{0x00}, v) {
+			return true
 		}
 	}
 	return false
