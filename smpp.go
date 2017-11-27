@@ -178,6 +178,31 @@ func (s *Smpp) SubmitSm(source_addr, destination_addr, short_message string, par
 	return p, nil
 }
 
+func (s *Smpp) SubmitSmEncoded(source_addr, destination_addr string, short_message []byte, params *Params) (Pdu, error) {
+
+	p, _ := NewSubmitSm(
+		&Header{
+			Id:       SUBMIT_SM,
+			Sequence: s.NewSeqNum(),
+		},
+		[]byte{},
+	)
+
+	p.SetField(SOURCE_ADDR, source_addr)
+	p.SetField(DESTINATION_ADDR, destination_addr)
+	p.SetField(SHORT_MESSAGE, short_message)
+
+	for f, v := range *params {
+		err := p.SetField(f, v)
+
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return p, nil
+}
+
 func (s *Smpp) SubmitSmResp(seq uint32, status CMDStatus, messageId string) (Pdu, error) {
 	p, _ := NewSubmitSmResp(
 		&Header{
