@@ -7,7 +7,7 @@ import (
 
 func main() {
 	// connect and bind
-	trx, err := smpp.NewTransmitter(
+	rx, err := smpp.NewReceiver(
 		"localhost",
 		9000,
 		5,
@@ -23,7 +23,7 @@ func main() {
 	}
 
 	for {
-		pdu, err := trx.Read() // This is blocking
+		pdu, err := rx.Read() // This is blocking
 		if err != nil {
 			fmt.Println("Read Err:", err)
 			break
@@ -39,7 +39,7 @@ func main() {
 			}
 
 			// Respond back to Deliver SM with Deliver SM Resp
-			err := trx.DeliverSmResp(pdu.GetHeader().Sequence, smpp.ESME_ROK)
+			err := rx.DeliverSmResp(pdu.GetHeader().Sequence, smpp.ESME_ROK)
 
 			if err != nil {
 				fmt.Println("DeliverSmResp err:", err)
