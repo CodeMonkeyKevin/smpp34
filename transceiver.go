@@ -195,9 +195,13 @@ func (t *Transceiver) startEnquireLink(eli int) {
 
 			t.eLCheckTimer.Reset(d)
 		case <-t.eLCheckTimer.C:
-			t.Err = SmppELRespErr
-			t.Close()
-			return
+			p, _ := t.EnquireLink()
+			if err := t.Write(p); err != nil {
+				t.Err = SmppELRespErr
+				t.Close()
+				return
+			}
+			t.eLCheckTimer.Reset(d)
 		}
 	}
 }
